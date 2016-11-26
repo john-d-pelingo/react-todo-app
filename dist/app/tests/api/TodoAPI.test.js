@@ -68,5 +68,46 @@ describe('TodoAPI', function () {
             expect(actualTodos).toEqual(todos);
         });
     });
+
+    describe('filterTodos', function () {
+        var todos = [{
+            id: 1,
+            text: 'Eat apple',
+            completed: true
+        }, {
+            id: 44,
+            text: 'Go apple !!!',
+            completed: false
+        }, {
+            id: 2212,
+            text: 'SHAYMAN',
+            completed: true
+        }];
+
+        it('should return all todos if showCompleted is true', function () {
+            var filteredTodos = TodoAPI.filterTodos(todos, true, '');
+            expect(filteredTodos.length).toBe(3);
+        });
+
+        it('should return non-completed todos when showCompleted is false', function () {
+            var filteredTodos = TodoAPI.filterTodos(todos, false, '');
+            expect(filteredTodos.length).toBe(1);
+        });
+
+        it('should sort todos by completed status', function () {
+            var filteredTodos = TodoAPI.filterTodos(todos, true, '');
+            expect(filteredTodos[0].completed).toBe(false);
+        });
+
+        it('should return all todos if searchText is empty', function () {
+            var filteredTodos = TodoAPI.filterTodos(todos, true, '');
+            expect(filteredTodos.length).toBe(3);
+        });
+
+        it('should filter todos by searchText \'apple\'', function () {
+            var filteredTodos = TodoAPI.filterTodos(todos, true, 'aPpLe');
+            expect(filteredTodos.length).toBe(2);
+        });
+    });
 });
 //# sourceMappingURL=TodoAPI.test.js.map
