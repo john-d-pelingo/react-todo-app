@@ -21,7 +21,7 @@ describe('AddTodo', () => {
 
         addTodo.refs['new-todo-text'].value = strTodoToAdd;
 
-        // Activate the form submit
+        // Activate the form submit or simulate the submit event
         TestUtils.Simulate.submit($el.find('form')[0]);
 
         expect(spy).toHaveBeenCalledWith(strTodoToAdd);
