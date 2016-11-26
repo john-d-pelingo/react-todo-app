@@ -15,7 +15,7 @@ let TodoList = React.createClass({
                     /* {...todo} is object spread operator
                      */
                 }
-                return <Todo key={todo.id} {...todo}/>
+                return <Todo key={todo.id} {...todo} onToggle={this.props.onToggle}/>
             });
         };
         return (

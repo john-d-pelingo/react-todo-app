@@ -16,7 +16,6 @@ describe('TodoSearch', () => {
         let searchText = 'Google';
         let spy = expect.createSpy();
         let todoSearch = TestUtils.renderIntoDocument(<TodoSearch onSearch={spy}/>);
-        let $el = $(ReactDOM.findDOMNode(todoSearch));
 
         todoSearch.refs.searchText.value = searchText;
 
