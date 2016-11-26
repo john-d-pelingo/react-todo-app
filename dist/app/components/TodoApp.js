@@ -4,6 +4,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var React = require('react');
 var uuid = require('node-uuid');
+var moment = require('moment');
 
 var TodoSearch = require('TodoSearch');
 var TodoList = require('TodoList');
@@ -31,7 +32,9 @@ var TodoApp = React.createClass({
                 // Generate random ID
                 id: uuid(),
                 text: text,
-                completed: false
+                completed: false,
+                createdAt: moment().unix(),
+                completedAt: undefined
             }])
         });
     },
@@ -39,6 +42,7 @@ var TodoApp = React.createClass({
         var updatedTodos = this.state.todos.map(function (todo) {
             if (todo.id === id) {
                 todo.completed = !todo.completed;
+                todo.completedAt = todo.completed ? moment().unix() : undefined;
             }
 
             return todo;
