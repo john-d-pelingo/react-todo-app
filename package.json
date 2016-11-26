@@ -1,7 +1,7 @@
 {
-  "name": "react-webpack-boilerplate",
-  "version": "0.0.3",
-  "description": "react-webpack-boilerplate",
+  "name": "react-todo-app",
+  "version": "0.0.1",
+  "description": "react-todo-app",
   "main": "index.js",
   "scripts": {
     "test": "karma start",

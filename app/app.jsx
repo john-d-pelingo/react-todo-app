@@ -11,6 +11,7 @@ let {Route, Router, IndexRoute, hashHistory} = require('react-router');
 // let hashHistory = require('react-router').hashHistory;
 
 // Components
+let ToDoApp = require('TodoApp');
 
 
 // Load foundation (css!) and inject to HTML (style!)
@@ -26,6 +27,6 @@ require('style!css!sass!applicationStyles');
 // The Main component will be in charge of rendering the main app
 // The weather component is our index/home
 ReactDOM.render(
-    <p>Boilerplate 3 Project</p>,
+    <ToDoApp/>,
     document.getElementById('app')
 );

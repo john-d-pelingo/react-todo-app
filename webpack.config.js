@@ -40,6 +40,12 @@ module.exports = {
     },
     resolve  : {
         root      : __dirname,
+        // Always look for modules in components folder by default
+        // instead of specifying it one by one
+        modulesDirectories: [
+            'node_modules',
+            './app/components'
+        ],
         // Pick names for our components
         // Tell webpack where to find that component
         alias     : {
