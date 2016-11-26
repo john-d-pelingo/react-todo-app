@@ -44,7 +44,8 @@ module.exports = {
         // instead of specifying it one by one
         modulesDirectories: [
             'node_modules',
-            './app/components'
+            './app/components',
+            './app/api'
         ],
         // Pick names for our components
         // Tell webpack where to find that component
