@@ -21,13 +21,22 @@ let ToDoApp = require('TodoApp');
 let actions = require('actions');
 let store = require('configureStore').configure();
 
+let TodoAPI = require('TodoAPI');
+
 store.subscribe(() => {
-    console.log('New state', store.getState());
+    let state = store.getState();
+    console.log('New state', state);
+    // Get todos that were previously saved
+    TodoAPI.setTodos(state.todos);
 });
 
-store.dispatch(actions.addTodo('Do something'));
-store.dispatch(actions.setSearchText('Wut?'));
-store.dispatch(actions.toggleShowCompleted());
+// Create defaults
+// store.dispatch(actions.addTodo('Do something'));
+// store.dispatch(actions.setSearchText('something'));
+// store.dispatch(actions.toggleShowCompleted());
+
+let initialTodos = TodoAPI.getTodos();
+store.dispatch(actions.addTodos(initialTodos));
 
 // Load foundation (css!) and inject to HTML (style!)
 // require('style!css!foundation-sites/dist/foundation.min.css');

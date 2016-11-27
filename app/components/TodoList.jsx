@@ -4,6 +4,9 @@ let React = require('react');
 // The children need to specify which data they like from the Provider
 let {connect} = require('react-redux');
 
+// Doesn't filter the list based on completed value of search text therefore we use this
+let TodoAPI = require('TodoAPI');
+
 // Not gonna work because the default export is the pure react version (non-connected) and we want the connected one
 // let Todo = require('Todo');
 // import takes care that we get the default if no object destructuring is defined
@@ -13,7 +16,7 @@ import Todo from 'Todo';
 // Export non-connected react component version
 export let TodoList = React.createClass({
     render: function () {
-        let {todos} = this.props;
+        let {todos, showCompleted, searchText} = this.props;
 
         let renderTodos = () => {
             // If there are no todos
@@ -25,7 +28,11 @@ export let TodoList = React.createClass({
             // When we are iterating over an array and we are generating multiple instances of our component
             // we have to give them a unique key prop
             // It is used internally by React to keep track of the individual components
-            return todos.map((todo) => {
+            // return todos.map((todo) => {
+            // Instead of mapping directly over the todos array we're gonna first call TodoAPI
+            // Now this component is gonna properly fetch the todos array
+            // related to the showCompleted and searchText value
+            return TodoAPI.filterTodos(todos, showCompleted, searchText).map((todo) => {
                 {
                     /* {...todo} is object spread operator
                      */
@@ -56,8 +63,11 @@ export default connect(
         // The property todos is gonna get set on the props for our component TodoList
         // And our TodoList component is gonna have access to whatever the state.todos property is
         // which is an array of todo items
-        return {
-            todos: state.todos
-        };
+        // return {
+        //     todos: state.todos,
+        // };
+
+        // We want all three properties of our redux store
+        return state;
     }
 )(TodoList);
