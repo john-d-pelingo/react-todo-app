@@ -1,4 +1,5 @@
 // Require dependencies
+// React
 const React = require('react');
 const ReactDOM = require('react-dom');
 // ES6/ES2015: Object destructuring
@@ -10,10 +11,13 @@ let {Route, Router, IndexRoute, hashHistory} = require('react-router');
 // let IndexRouter = require('react-router').IndexRouter;
 // let hashHistory = require('react-router').hashHistory;
 
+// Redux
+let {Provider} = require('react-redux');
+
 // Components
 let ToDoApp = require('TodoApp');
 
-// Redux
+// My Redux
 let actions = require('actions');
 let store = require('configureStore').configure();
 
@@ -24,7 +28,6 @@ store.subscribe(() => {
 store.dispatch(actions.addTodo('Do something'));
 store.dispatch(actions.setSearchText('Wut?'));
 store.dispatch(actions.toggleShowCompleted());
-
 
 // Load foundation (css!) and inject to HTML (style!)
 // require('style!css!foundation-sites/dist/foundation.min.css');
@@ -39,6 +42,10 @@ require('style!css!sass!applicationStyles');
 // The Main component will be in charge of rendering the main app
 // The weather component is our index/home
 ReactDOM.render(
-    <ToDoApp/>,
+    // The ToDoApp component as well as all of its children are gonna be able to access
+    // the data on the store as well as the dispatch actions
+    <Provider store={store}>
+        <ToDoApp/>
+    </Provider>,
     document.getElementById('app')
 );

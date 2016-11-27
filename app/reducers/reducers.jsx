@@ -44,13 +44,14 @@ export let todosReducer = (state = [], action) => {
                     return {
                         ...todo,
                         // Flip the completed property
-                        completed: newCompleted,
+                        completed  : newCompleted,
                         // If completed, add a completed date
                         // If not completed, remove completed date
                         completedAt: newCompleted ? moment().unix() : undefined
                     };
+                } else {
+                    return todo;
                 }
-                return todo;
             });
         default:
             return state;
