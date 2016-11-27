@@ -70,9 +70,26 @@ var TodoApp = React.createClass({
         return React.createElement(
             'div',
             { className: 'todo-app' },
-            React.createElement(TodoSearch, { onSearch: this.handleSearch }),
-            React.createElement(TodoList, { todos: filteredTodos, onToggle: this.handleToggle }),
-            React.createElement(AddTodo, { onAddTodo: this.handleAddTodo })
+            React.createElement(
+                'h1',
+                { className: 'page-title' },
+                'Todo App'
+            ),
+            React.createElement(
+                'div',
+                { name: 'row' },
+                React.createElement(
+                    'div',
+                    { className: 'column small-centered small-11 medium-6 large-5' },
+                    React.createElement(
+                        'div',
+                        { className: 'container' },
+                        React.createElement(TodoSearch, { onSearch: this.handleSearch }),
+                        React.createElement(TodoList, { todos: filteredTodos, onToggle: this.handleToggle }),
+                        React.createElement(AddTodo, { onAddTodo: this.handleAddTodo })
+                    )
+                )
+            )
         );
     }
 });
