@@ -20,33 +20,36 @@ import AddTodo from 'AddTodo';
 let TodoAPI = require('TodoAPI');
 
 let TodoApp = React.createClass({
-    getInitialState   : function () {
-        return {
-            showCompleted: false,
-            searchText   : '',
-            // Load the todos
-            todos        : TodoAPI.getTodos()
-        };
-    },
+    // The store handles the state now
+    // getInitialState   : function () {
+    //     return {
+    //         showCompleted: false,
+    //         searchText   : '',
+    //         // Load the todos
+    //         todos        : TodoAPI.getTodos()
+    //     };
+    // },
+    // The store handles the update now
     // Save the todos
-    componentDidUpdate: function () {
-        TodoAPI.setTodos(this.state.todos);
-    },
-    handleAddTodo     : function (text) {
-        this.setState({
-            todos: [
-                ...this.state.todos,
-                {
-                    // Generate random ID
-                    id         : uuid(),
-                    text       : text,
-                    completed  : false,
-                    createdAt  : moment().unix(),
-                    completedAt: undefined
-                }
-            ]
-        })
-    },
+    // componentDidUpdate: function () {
+    //     TodoAPI.setTodos(this.state.todos);
+    // },
+    // The store handles the add todo now
+    // handleAddTodo     : function (text) {
+    //     this.setState({
+    //         todos: [
+    //             ...this.state.todos,
+    //             {
+    //                 // Generate random ID
+    //                 id         : uuid(),
+    //                 text       : text,
+    //                 completed  : false,
+    //                 createdAt  : moment().unix(),
+    //                 completedAt: undefined
+    //             }
+    //         ]
+    //     })
+    // },
     // The store handles the toggle now
     // handleToggle      : function (id) {
     //     let updatedTodos = this.state.todos.map((todo) => {
@@ -62,14 +65,16 @@ let TodoApp = React.createClass({
     //         todos: updatedTodos
     //     });
     // },
-    handleSearch      : function (showCompleted, searchText) {
-        this.setState({
-            showCompleted: showCompleted,
-            searchText   : searchText.toLowerCase()
-        });
-    },
+    // The store handles the search now
+    // handleSearch      : function (showCompleted, searchText) {
+    //     this.setState({
+    //         showCompleted: showCompleted,
+    //         searchText   : searchText.toLowerCase()
+    //     });
+    // },
     render            : function () {
-        let {todos, showCompleted, searchText} = this.state;
+        // The store handles the state now
+        // let {todos, showCompleted, searchText} = this.state;
         // Filter the todos
         // We no longer need to filter out the todos since it is handle by the TodoList component
         // let filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
@@ -80,15 +85,27 @@ let TodoApp = React.createClass({
                 <div name="row">
                     <div className="column small-centered small-11 medium-6 large-5">
                         <div className="container">
-                            <TodoSearch onSearch={this.handleSearch}/>
+                            {
+                                /* Now that we have access to the store, we don't need to pass the data down to
+                                 * TodoSearch from TodoApp
+                                 */
+                            }
+                            {/*<TodoSearch onSearch={this.handleSearch}/>*/}
+                            <TodoSearch />
                             {
                                 /* Now that we have access to the store, we don't need to pass the data down to TodoList
                                  * from TodoApp
                                  */
                             }
                             {/*<TodoList todos={filteredTodos} onToggle={this.handleToggle}/>*/}
-                            <TodoList/>
-                            <AddTodo onAddTodo={this.handleAddTodo}/>
+                            <TodoList />
+                            {
+                                /* Now that we have access to the store, we don't need to pass the data down to
+                                 * onAddTodo from TodoApp
+                                 */
+                            }
+                            {/*<AddTodo onAddTodo={this.handleAddTodo}/>*/}
+                            <AddTodo />
                         </div>
                     </div>
                 </div>

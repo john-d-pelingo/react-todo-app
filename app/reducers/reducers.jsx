@@ -53,6 +53,12 @@ export let todosReducer = (state = [], action) => {
                     return todo;
                 }
             });
+        case 'ADD_TODOS':
+            return [
+                ...state,
+                // The old todos stored locally
+                ...action.todos
+            ];
         default:
             return state;
     }

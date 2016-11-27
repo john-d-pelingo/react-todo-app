@@ -59,12 +59,40 @@ describe('Reducers', () => {
             let action = {
                 type: 'TOGGLE_TODO',
                 id  : todos[0].id
-            }
+            };
 
             let res = reducers.todosReducer(df(todos), df(action));
 
             expect(res[0].completed).toBe(false);
             expect(res[0].completedAt).toNotExist();
+        });
+
+        it('should add existing todos', () => {
+            let todos = [
+                {
+                    id         : '79',
+                    text       : 'U WOT',
+                    completed  : false,
+                    completedAt: undefined,
+                    createdAt  : 333333
+                },
+                {
+                    id         : '7222',
+                    text       : 'U???',
+                    completed  : false,
+                    completedAt: undefined,
+                    createdAt  : 3233333
+                }
+            ];
+            let action = {
+                type: 'ADD_TODOS',
+                todos
+            };
+
+            let res = reducers.todosReducer(df([]), df(action));
+
+            expect(res.length).toBe(2);
+            expect(res[0]).toEqual(todos[0]);
         });
     });
 
