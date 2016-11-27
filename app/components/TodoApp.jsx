@@ -2,7 +2,9 @@ let React = require('react');
 let uuid = require('node-uuid');
 let moment = require('moment');
 
-let TodoSearch = require('TodoSearch');
+// No longer works because we need the connected react component
+// let TodoSearch = require('TodoSearch');
+import TodoSearch from 'TodoSearch';
 
 // No longer works because we need the connected react component
 // let TodoList = require('TodoList');
@@ -69,7 +71,8 @@ let TodoApp = React.createClass({
     render            : function () {
         let {todos, showCompleted, searchText} = this.state;
         // Filter the todos
-        let filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
+        // We no longer need to filter out the todos since it is handle by the TodoList component
+        // let filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
 
         return (
             <div className="todo-app">

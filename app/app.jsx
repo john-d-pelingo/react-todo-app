@@ -25,9 +25,10 @@ store.subscribe(() => {
     console.log('New state', store.getState());
 });
 
-store.dispatch(actions.addTodo('Do something'));
-store.dispatch(actions.setSearchText('Wut?'));
-store.dispatch(actions.toggleShowCompleted());
+// Create defaults
+// store.dispatch(actions.addTodo('Do something'));
+// store.dispatch(actions.setSearchText('something'));
+// store.dispatch(actions.toggleShowCompleted());
 
 // Load foundation (css!) and inject to HTML (style!)
 // require('style!css!foundation-sites/dist/foundation.min.css');
