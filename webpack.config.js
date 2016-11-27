@@ -4,7 +4,7 @@ let path = require('path');
 module.exports = {
     // Where to start processing our code
     // Inputs
-    entry    : [
+    entry     : [
         // script! is to package the scripts to webpack
         // In other words, allow jQuery in our components
         'script!jquery/dist/jquery.min.js',
@@ -14,7 +14,7 @@ module.exports = {
     // Provide a set of key-value pairs where the key is the module name
     // and the value is the variable name we want available inside of our
     // external script files
-    externals: {
+    externals : {
         // Let foundation properly attach its methods onto the jQuery object
         jquery: 'jQuery'
     },
@@ -22,7 +22,7 @@ module.exports = {
     // Which variable names to look for (like $ for jQuery) and if it finds them
     // and there is no other variable declared then tell webpack to go ahead and
     // require the variable and name it that variable
-    plugins  : [
+    plugins   : [
         // The key is the variable name to watch for and the value is the module
         // to replace it with
         new webpack.ProvidePlugin({
@@ -32,14 +32,14 @@ module.exports = {
     ],
     // Specify where to dump the bundled file
     // Output
-    output   : {
+    output    : {
         // Path to the folder
         // NodeJS exclusive __dirname: path to the current folder
         path    : __dirname,
         filename: './public/bundle.js'
     },
-    resolve  : {
-        root      : __dirname,
+    resolve   : {
+        root              : __dirname,
         // Always look for modules in components folder by default
         // instead of specifying it one by one
         modulesDirectories: [
@@ -49,15 +49,16 @@ module.exports = {
         ],
         // Pick names for our components
         // Tell webpack where to find that component
-        alias     : {
+        alias             : {
             applicationStyles: 'app/styles/app.scss',
-            actions: 'app/actions/actions.jsx'
+            actions          : 'app/actions/actions.jsx',
+            reducers         : 'app/reducers/reducers.jsx'
         },
         // List of file extensions that we want to process
-        extensions: ['', '.js', '.jsx'],
+        extensions        : ['', '.js', '.jsx'],
     },
     // Add the loader into the modules
-    module   : {
+    module    : {
         loaders: [
             // Convert jsx files into es5 code that we can use today
             {
@@ -86,7 +87,7 @@ module.exports = {
     // Create source map which are very important debugging tools
     // cheap-module-eval-source-map not working
     // devtool: 'cheap-module-eval-source-map'
-    devtool  : 'inline-source-map'
+    devtool   : 'inline-source-map'
     // or
     // devtool: 'eval-source-map'
 
