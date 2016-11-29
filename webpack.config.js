@@ -50,6 +50,10 @@ module.exports = {
         // Pick names for our components
         // Tell webpack where to find that component
         alias             : {
+            // Aliases to end all aliases
+            // Simple way to access any of our modules
+            app: 'app',
+
             applicationStyles: 'app/styles/app.scss',
             actions          : 'app/actions/actions.jsx',
             reducers         : 'app/reducers/reducers.jsx',

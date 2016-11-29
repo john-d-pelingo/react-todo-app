@@ -21,10 +21,18 @@ let ToDoApp = require('TodoApp');
 let actions = require('actions');
 let store = require('configureStore').configure();
 
+// Custom APIs
 let TodoAPI = require('TodoAPI');
 
+// No need to use from since we don't care about creating any variables via the modules exports
+// import './../playground/firebase/index';
+
 store.subscribe(() => {
+    // debugger;
+
     let state = store.getState();
+    // BAD BAD BAD but used this to fix an issue where a todo was added
+    // state.todos = [];
     console.log('New state', state);
     // Get todos that were previously saved
     TodoAPI.setTodos(state.todos);

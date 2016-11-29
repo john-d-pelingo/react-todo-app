@@ -25,15 +25,18 @@ export let todosReducer = (state = [], action) => {
         case 'ADD_TODO':
             return [
                 ...state,
-                {
-                    // Generate random ID
-                    id         : uuid(),
-                    text       : action.text,
-                    completed  : false,
-                    // Get current timestamp
-                    createdAt  : moment().unix(),
-                    completedAt: undefined
-                }
+                // {
+                //     // Generate random ID
+                //     id         : uuid(),
+                //     text       : action.text,
+                //     completed  : false,
+                //     // Get current timestamp
+                //     createdAt  : moment().unix(),
+                //     completedAt: undefined
+                // }
+                // We generate the todo in our action so we can save it to firebase
+                // This is gonna let our reducer add the new todo without worrying about the contents of the object
+                action.todo
             ];
         case 'TOGGLE_TODO':
             return state.map((todo) => {

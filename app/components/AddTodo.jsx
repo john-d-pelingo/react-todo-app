@@ -19,7 +19,9 @@ export let AddTodo = React.createClass({
             // this.props.onAddTodo(strNewTodo.trim());
             // Instead we use the dispatch function provided by the store
             // and pass the action addTodo()
-            dispatch(actions.addTodo(strNewTodo));
+            // dispatch(actions.addTodo(strNewTodo));
+            // New one with firebase integration
+            dispatch(actions.startAddTodo(strNewTodo));
         } else {
             inputNewTodoText.focus();
         }
