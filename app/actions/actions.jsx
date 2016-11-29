@@ -30,6 +30,7 @@ export let addTodos = (todos) => {
 // were 3rd party calls such as asynchronous calls where the output values were different every time
 // This means that the reducer would be impure
 export let startAddTodo = (text) => {
+    // redux-thunk allows as to return functions that get executed like in this case
     // dispatch is gonna let us dispatch some actions after our data gets saved in this case to firebase
     // getState gets the current state of the redux store
     return (dispatch, getState) => {
@@ -77,9 +78,38 @@ export let toggleShowCompleted = () => {
     };
 };
 
-export let toggleTodo = (id) => {
+// export lettoggleTodo = (id) => {
+//     return {
+//         type: 'TOGGLE_TODO',
+//         id
+//     };
+// };
+
+export let updateTodo = (id, updates) => {
     return {
-        type: 'TOGGLE_TODO',
-        id
+        type: 'UPDATE_TODO',
+        id,
+        updates
+    };
+};
+
+export let startToggleTodo = (id, completed) => {
+    // redux-thunk allows as to return functions that get executed like in this case
+    return (dispatch, getState) => {
+        // let todoRef = firebaseRef.child('todos/' + id);
+        // ES6 template strings
+        let todoRef = firebaseRef.child(`todos/${id}`);
+
+        // Change completed property to whatever was passed in
+
+        let updates = {
+            completed,
+            completedAt: completed ? moment().unix() : null
+        };
+
+        // We return the promise so we can use it for tests
+        return todoRef.update(updates).then(() => {
+            dispatch(updateTodo(id, updates));
+        });
     };
 };

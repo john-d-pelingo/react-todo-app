@@ -38,19 +38,34 @@ export let todosReducer = (state = [], action) => {
                 // This is gonna let our reducer add the new todo without worrying about the contents of the object
                 action.todo
             ];
-        case 'TOGGLE_TODO':
+        // case 'TOGGLE_TODO':
+        //     return state.map((todo) => {
+        //         // Search for the id of the todo
+        //         // Each todo is an object
+        //         if (todo.id === action.id) {
+        //             let newCompleted = !todo.completed;
+        //             return {
+        //                 ...todo,
+        //                 // Flip the completed property
+        //                 completed  : newCompleted,
+        //                 // If completed, add a completed date
+        //                 // If not completed, remove completed date
+        //                 completedAt: newCompleted ? moment().unix() : undefined
+        //             };
+        //         } else {
+        //             return todo;
+        //         }
+        //     });
+        // NEW
+        case 'UPDATE_TODO':
             return state.map((todo) => {
                 // Search for the id of the todo
                 // Each todo is an object
                 if (todo.id === action.id) {
-                    let newCompleted = !todo.completed;
                     return {
+                        // The second spread operator is gonna override the first spread operator
                         ...todo,
-                        // Flip the completed property
-                        completed  : newCompleted,
-                        // If completed, add a completed date
-                        // If not completed, remove completed date
-                        completedAt: newCompleted ? moment().unix() : undefined
+                        ...action.updates
                     };
                 } else {
                     return todo;

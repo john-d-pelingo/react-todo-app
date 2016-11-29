@@ -3,6 +3,7 @@ import configureMockStore from 'redux-mock-store';
 // for the mock store
 import thunk from 'redux-thunk';
 
+import forebase, {firebaseRef} from 'app/firebase';
 let actions = require('actions');
 
 // Generator to generate as many distinct stores as we like
@@ -39,7 +40,7 @@ describe('Actions', () => {
         expect(res).toEqual(action);
     });
 
-    // Asynchronous test since we sue firebase
+    // Asynchronous test since we use firebase
     it('should create todo and dispatch ADD_TODO but occasionally fails because Google firebase is a bit slow', (done) => {
         const STORE = createMockStore({});
         const TODO_TEXT = 'A todo iteeeeem';
@@ -105,14 +106,77 @@ describe('Actions', () => {
         expect(res).toEqual(action);
     });
 
-    it('should generate toggle todo action', () => {
+    // it('should generate toggle todo action', () => {
+    it('should generate update todo action', () => {
         let action = {
-            type: 'TOGGLE_TODO',
-            id  : '42'
+            // type: 'TOGGLE_TODO',
+            type   : 'UPDATE_TODO',
+            id     : '42',
+            updates: {
+                completed: false
+            }
         };
 
-        let res = actions.toggleTodo(action.id);
+        // let res = actions.toggleTodo(action.id);
+        let res = actions.updateTodo(action.id, action.updates);
 
         expect(res).toEqual(action);
+    });
+
+    describe('Tests with firebase todos', () => {
+        let testTodoRef;
+
+        // From mocha and let's us define some code to run before every single test
+        // Asynchronous
+        // Create a todo item for test purposes
+        beforeEach((done) => {
+            // We use push() to generate that reference
+            testTodoRef = firebaseRef.child('todos').push();
+
+            testTodoRef
+                .set({
+                    text     : 'Something to do',
+                    completed: false,
+                    createdAt: 23123
+                })
+                // Success
+                .then(() => done());
+        });
+
+        // From mocha and let's us define some code to run after every single test
+        // Asynchronous
+        // Remove generated todo item for test purposes
+        afterEach((done) => {
+            testTodoRef
+                .remove()
+                // Success
+                .then(() => done());
+        });
+
+        // Asynchronous test
+        it('should toggle todo and dispatch UPDATE_TODO action', (done) => {
+            const STORE = createMockStore({});
+            // Was originally false above
+            const ACTION = actions.startToggleTodo(testTodoRef.key, true);
+
+            STORE.dispatch(ACTION).then(() => {
+                    // Grab all mocked actions off of our store
+                    const MOCK_ACTIONS = STORE.getActions();
+
+                    expect(MOCK_ACTIONS[0]).toInclude({
+                        type: 'UPDATE_TODO',
+                        id  : testTodoRef.key,
+                    });
+                    expect(MOCK_ACTIONS[0].updates).toInclude({
+                        // Can't get the completedAt key-value pair because it's always different
+                        completed: true
+                    });
+                    expect(MOCK_ACTIONS[0].updates.completedAt).toExist();
+
+                    done();
+                },
+                // Fail
+                done);
+        });
     });
 });
