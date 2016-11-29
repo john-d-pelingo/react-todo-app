@@ -1,6 +1,9 @@
 let webpack = require('webpack');
 let path = require('path');
 
+// Fetch an environment variable
+process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
+
 module.exports = {
     // Where to start processing our code
     // Inputs
@@ -28,6 +31,12 @@ module.exports = {
         new webpack.ProvidePlugin({
             '$'     : 'jquery',
             'jQuery': 'jquery'
+        }),
+        // Set some configs for the UglifyJsPlugin which comes with webpack
+        new webpack.optimize.UglifyJsPlugin({
+            compressor: {
+                warnings: false
+            }
         })
     ],
     // Specify where to dump the bundled file
@@ -92,7 +101,7 @@ module.exports = {
     // Create source map which are very important debugging tools
     // cheap-module-eval-source-map not working
     // devtool: 'cheap-module-eval-source-map'
-    devtool   : 'inline-source-map'
+    devtool   : process.env.NODE_ENV === 'production' ? undefined : 'inline-source-map'
     // or
     // devtool: 'eval-source-map'
 
