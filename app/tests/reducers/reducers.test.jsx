@@ -39,32 +39,54 @@ describe('Reducers', () => {
             // It's best to not use components that should be tested
             let action = {
                 type: 'ADD_TODO',
-                text: 'Must love JS',
+                // After implementing startAddTodo() in the actions a string is no longer passed through
+                // Instead a todo object is passed
+                // text: 'Must love JS',
+                todo: {
+                    id       : '123456',
+                    text     : ' Something to do',
+                    completed: false,
+                    createdAt: 98989
+                }
             };
 
             let res = reducers.todosReducer(df([]), df(action));
 
             expect(res.length).toEqual(1);
-            expect(res[0].text).toEqual(action.text);
+            expect(res[0]).toEqual(action.todo);
         });
 
-        it('should toggle todo', () => {
+        // it('should toggle todo', () => {
+        it('should update todo', () => {
             let todos = [{
                 id         : '89',
+                text       : 'hueheuhueue',
                 completed  : true,
                 createdAt  : -99999,
                 completedAt: -666
             }];
 
+            let updates = {
+                completed  : false,
+                completedAt: null
+            };
+
             let action = {
-                type: 'TOGGLE_TODO',
-                id  : todos[0].id
+                // type: 'TOGGLE_TODO',
+                type: 'UPDATE_TODO',
+                id  : todos[0].id,
+                updates
             };
 
             let res = reducers.todosReducer(df(todos), df(action));
 
-            expect(res[0].completed).toBe(false);
-            expect(res[0].completedAt).toNotExist();
+            // expect(res[0].completed).toBe(false);
+            // expect(res[0].completedAt).toNotExist();
+
+            expect(res[0].completed).toBe(updates.completed);
+            expect(res[0].completedAt).toBe(updates.completedAt);
+            // Expect the text property to stay the same
+            expect(res[0].text).toBe(todos[0].text);
         });
 
         it('should add existing todos', () => {

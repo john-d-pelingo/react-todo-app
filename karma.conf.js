@@ -7,7 +7,7 @@
 // mocha : gives series of functions to make testing JavaScript easy
 // expect : assertion functions
 
-var webpackConfig = require('./webpack.config.js');
+let webpackConfig = require('./webpack.config.js');
 
 module.exports = function (config) {
     config.set({
@@ -41,8 +41,8 @@ module.exports = function (config) {
             // Use mocha
             mocha: {
                 // If a test never ends, cancel it at a certain point of time
-                // 5 seconds
-                timeout: '5000'
+                // 10 seconds
+                timeout: '10000'
             }
         },
         // Load webpack config

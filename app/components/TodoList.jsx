@@ -19,8 +19,12 @@ export let TodoList = React.createClass({
         let {todos, showCompleted, searchText} = this.props;
 
         let renderTodos = () => {
+            let filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
             // If there are no todos
-            if (todos.length === 0) {
+            // We need to get the length of the filtered todos because it doesn't matter if there are todos as they
+            // might not get shown the screen because they might not have passed the filters test
+            // if (todos.length === 0) {
+            if (filteredTodos.length === 0) {
                 return (
                     <p className="container__message">Nothing Todo</p>
                 );
@@ -32,7 +36,7 @@ export let TodoList = React.createClass({
             // Instead of mapping directly over the todos array we're gonna first call TodoAPI
             // Now this component is gonna properly fetch the todos array
             // related to the showCompleted and searchText value
-            return TodoAPI.filterTodos(todos, showCompleted, searchText).map((todo) => {
+            return filteredTodos.map((todo) => {
                 {
                     /* {...todo} is object spread operator
                      */

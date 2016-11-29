@@ -8,19 +8,24 @@ let TestUtils = require('react-addons-test-utils');
 // No longer works
 // let Todo = require('Todo');
 // Grab our raw (non-connected) react component
-let {Todo} = require('Todo');
+// let {Todo} = require('Todo');
+import * as actions from 'actions';
+import {Todo} from 'Todo';
 
 describe('Todo', () => {
     it('should exist', () => {
         expect(Todo).toExist();
     });
 
-    it('should dispatch TOGGLE_TODO action on click', () => {
+    // it('should dispatch TOGGLE_TODO action on click', () => {
+    it('should dispatch UPDATE_TODO action on click', () => {
         let todoData = {
             id       : 9001,
             text     : 'Testing todo',
             completed: true
         };
+
+        let action = actions.startToggleTodo(todoData.id, todoData.completed);
 
         let spy = expect.createSpy();
         let todo = TestUtils.renderIntoDocument(<Todo {...todoData} dispatch={spy}/>);
@@ -30,10 +35,11 @@ describe('Todo', () => {
         TestUtils.Simulate.click($el[0]);
 
         // We're expecting the action object which includes the id
-        expect(spy).toHaveBeenCalledWith({
-            type: 'TOGGLE_TODO',
-            id  : todoData.id
-        });
+        // expect(spy).toHaveBeenCalledWith({
+        //     type: 'TOGGLE_TODO',
+        //     id  : todoData.id
+        // });
+        expect(spy).toHaveBeenCalledWith(action);
     });
 
     // No longer works
