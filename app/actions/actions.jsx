@@ -19,13 +19,6 @@ export let addTodo = (todo) => {
     };
 };
 
-export let addTodos = (todos) => {
-    return {
-        type: 'ADD_TODOS',
-        todos
-    };
-};
-
 // The main reason that we put the new todo in the actions is because moment().unix() and uuuid
 // were 3rd party calls such as asynchronous calls where the output values were different every time
 // This means that the reducer would be impure
@@ -69,6 +62,55 @@ export let startAddTodo = (text) => {
                 console.log('Firebase error ', error);
             }
         );
+    };
+};
+
+export let addTodos = (todos) => {
+    return {
+        type: 'ADD_TODOS',
+        todos
+    };
+};
+
+export let startAddTodos = () => {
+    // Firebase returns
+    // '12312312': {
+    //     text: 'test'
+    // }
+
+    // Our app structure
+    // [{
+    //     id: '12312312',
+    //     'text: 'test'
+    // }]
+
+    return (dispatch, getState) => {
+
+        let todoRef = firebaseRef.child('todos');
+
+        // We return the promise so we can use it for tests
+        return todoRef
+            .once('value')
+            .then(
+                (snapshot) => {
+                    // Success
+
+                    let parsedTodos = [];
+                    let rawTodos = snapshot.val() || {};
+                    let todoIds = Object.keys(rawTodos);
+                    todoIds.forEach((todoId) => {
+                        parsedTodos.push({
+                            id: todoId,
+                            ...snapshot.val()[todoId],
+                        });
+                    });
+                    dispatch(addTodos(parsedTodos));
+                },
+                (error) => {
+                    // Fail
+                    console.log('Firebase error ', error);
+
+                });
     };
 };
 

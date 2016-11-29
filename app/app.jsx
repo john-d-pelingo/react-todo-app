@@ -27,24 +27,26 @@ let TodoAPI = require('TodoAPI');
 // No need to use from since we don't care about creating any variables via the modules exports
 // import './../playground/firebase/index';
 
-store.subscribe(() => {
-    // debugger;
-
-    let state = store.getState();
-    // BAD BAD BAD but used this to fix an issue where a todo was added
-    // state.todos = [];
-    console.log('New state', state);
-    // Get todos that were previously saved
-    TodoAPI.setTodos(state.todos);
-});
+// No doing these
+// store.subscribe(() => {
+//     // debugger;
+//
+//     let state = store.getState();
+//     // BAD BAD BAD but used this to fix an issue where a todo was added
+//     // state.todos = [];
+//     console.log('New state', state);
+//     // Get todos that were previously saved
+//     TodoAPI.setTodos(state.todos);
+// });
+// let initialTodos = TodoAPI.getTodos();
+// store.dispatch(actions.addTodos(initialTodos));
 
 // Create defaults
 // store.dispatch(actions.addTodo('Do something'));
 // store.dispatch(actions.setSearchText('something'));
 // store.dispatch(actions.toggleShowCompleted());
 
-let initialTodos = TodoAPI.getTodos();
-store.dispatch(actions.addTodos(initialTodos));
+store.dispatch(actions.startAddTodos());
 
 // Load foundation (css!) and inject to HTML (style!)
 // require('style!css!foundation-sites/dist/foundation.min.css');

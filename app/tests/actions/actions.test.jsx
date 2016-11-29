@@ -3,7 +3,7 @@ import configureMockStore from 'redux-mock-store';
 // for the mock store
 import thunk from 'redux-thunk';
 
-import forebase, {firebaseRef} from 'app/firebase';
+import firebase, {firebaseRef} from 'app/firebase';
 let actions = require('actions');
 
 // Generator to generate as many distinct stores as we like
@@ -130,17 +130,24 @@ describe('Actions', () => {
         // Asynchronous
         // Create a todo item for test purposes
         beforeEach((done) => {
-            // We use push() to generate that reference
-            testTodoRef = firebaseRef.child('todos').push();
+            let todosRef = firebaseRef.child('todos');
+            // Completely wipe all the todo items
+            todosRef
+                .remove()
+                .then(() => {
+                    // We use push() to generate that reference
+                    testTodoRef = firebaseRef.child('todos').push();
 
-            testTodoRef
-                .set({
-                    text     : 'Something to do',
-                    completed: false,
-                    createdAt: 23123
+                    // Continue the promise chain
+                    return testTodoRef
+                        .set({
+                            text     : 'Something to do',
+                            completed: false,
+                            createdAt: 23123
+                        });
                 })
-                // Success
-                .then(() => done());
+                .then(() => done())
+                .catch(done);
         });
 
         // From mocha and let's us define some code to run after every single test
@@ -165,7 +172,7 @@ describe('Actions', () => {
 
                     expect(MOCK_ACTIONS[0]).toInclude({
                         type: 'UPDATE_TODO',
-                        id  : testTodoRef.key,
+                        id  : testTodoRef.key
                     });
                     expect(MOCK_ACTIONS[0].updates).toInclude({
                         // Can't get the completedAt key-value pair because it's always different
@@ -177,6 +184,20 @@ describe('Actions', () => {
                 },
                 // Fail
                 done);
+        });
+
+        it('should populate todos and dispatch ADD_TODOS action', (done) => {
+            const STORE = createMockStore({});
+            const ACTION = actions.startAddTodos();
+
+            STORE.dispatch(ACTION).then(() => {
+                const MOCK_ACTIONS = STORE.getActions();
+                // console.log(MOCK_ACTIONS);
+                expect(MOCK_ACTIONS[0].type).toEqual('ADD_TODOS');
+                expect(MOCK_ACTIONS[0].todos.length).toBe(1);
+                expect(MOCK_ACTIONS[0].todos[0].text).toEqual('Something to do');
+                done();
+            }, done);
         });
     });
 });

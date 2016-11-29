@@ -109,8 +109,8 @@ firebaseRef.set({
 // firebaseRef.update({
 //     'isRunning': null
 // });
-
-firebaseRef.child('user/age').remove();
+//
+// firebaseRef.child('user/age').remove();
 
 // // Allow to trigger and listen for an event
 // // Fetch all of the data available at the current reference
