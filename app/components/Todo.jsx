@@ -33,7 +33,9 @@ export let Todo = React.createClass({
                 {/* Instead we use the dispatch function provided by the store
                   * and pass the action toggleTodo()
                   */}
-                dispatch(actions.toggleTodo(id));
+                {/*dispatch(actions.toggleTodo(id));*/}
+                dispatch(actions.startToggleTodo(id, !completed));
+
             }}>
                 {
                     /* Show warning without onChange handler, so I just return
