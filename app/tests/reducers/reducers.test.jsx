@@ -39,13 +39,21 @@ describe('Reducers', () => {
             // It's best to not use components that should be tested
             let action = {
                 type: 'ADD_TODO',
-                text: 'Must love JS',
+                // After implementing startAddTodo() in the actions a string is no longer passed through
+                // Instead a todo object is passed
+                // text: 'Must love JS',
+                todo: {
+                    id       : '123456',
+                    text     : ' Something to do',
+                    completed: false,
+                    createdAt: 98989
+                }
             };
 
             let res = reducers.todosReducer(df([]), df(action));
 
             expect(res.length).toEqual(1);
-            expect(res[0].text).toEqual(action.text);
+            expect(res[0]).toEqual(action.todo);
         });
 
         it('should toggle todo', () => {

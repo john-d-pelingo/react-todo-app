@@ -9,7 +9,7 @@ let TestUtils = require('react-addons-test-utils');
 // let AddTodo = require('AddTodo');
 // Get the raw (non-connected) react component
 let {AddTodo} = require('AddTodo');
-
+import * as actions from 'actions';
 
 describe('AddTodo', () => {
     it('should exist', () => {
@@ -18,10 +18,11 @@ describe('AddTodo', () => {
 
     it('should dispatch ADD_TODO when valid todo text', () => {
         let strTodoToAdd = 'Plaaaay';
-        let action = {
-            type: 'ADD_TODO',
-            text: strTodoToAdd
-        };
+        // let action = {
+        //     type: 'ADD_TODO',
+        //     text: strTodoToAdd
+        // };
+        let action = actions.startAddTodo(strTodoToAdd);
 
         let spy = expect.createSpy();
         let addTodo = TestUtils.renderIntoDocument(<AddTodo dispatch={spy}/>);

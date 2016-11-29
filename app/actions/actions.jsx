@@ -10,10 +10,12 @@ export let setSearchText = (searchText) => {
     };
 };
 
-export let addTodo = (text) => {
+export let addTodo = (todo) => {
     return {
         type: 'ADD_TODO',
-        text
+        // After implementing startAddTodo() in the actions a string is no longer passed through
+        // Instead a todo object is passed
+        todo
     };
 };
 
@@ -44,11 +46,13 @@ export let startAddTodo = (text) => {
         };
 
         let todoRef = firebaseRef.child('todos').push(todo);
+        // console.log('STAGE 1');
 
         // Synchronize with firebase
         // We return the promise so we can use it for tests
         return todoRef.then(
-            (snapshot) => {
+            () => {
+                // console.log('STAGE 2');
                 // We dispatch the action addTodo which is defined above
                 dispatch(
                     // now addTodo receives objects instead of text
