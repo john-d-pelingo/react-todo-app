@@ -2,7 +2,7 @@ let webpack = require('webpack');
 let path = require('path');
 
 // Fetch an environment variable
-process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 module.exports = {
     // Where to start processing our code
@@ -101,7 +101,8 @@ module.exports = {
     // Create source map which are very important debugging tools
     // cheap-module-eval-source-map not working
     // devtool: 'cheap-module-eval-source-map'
-    devtool   : process.env.NODE_ENV === 'production' ? undefined : 'inline-source-map'
+    // devtool   : process.env.NODE_ENV === 'production' ? undefined : 'inline-source-map'
+    devtool: process.env.NODE_ENV === 'production' ? undefined : 'eval-source-map'
     // or
     // devtool: 'eval-source-map'
 
