@@ -10,9 +10,14 @@
 let webpackConfig = require('./webpack.config.js');
 
 module.exports = function (config) {
+    let browsers = ['Chrome', 'ChromeCanary'];
+    if (process.env.TRAVIS) {
+        browsers = ['Chrome_travis_ci'];
+    }
+
     config.set({
         // Specify which browsers we want are tests to run in
-        browser      : ['Chrome'],
+        browsers: browsers,
         singleRun    : true,
         // Use the mocha framework for tests
         frameworks   : ['mocha'],
@@ -49,6 +54,12 @@ module.exports = function (config) {
         webpack      : webpackConfig,
         webpackServer: {
             noInfo: true
-        }
+        },
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
     });
 };
