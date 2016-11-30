@@ -1,8 +1,16 @@
 let webpack = require('webpack');
 let path = require('path');
+let envFile = require('node-env-file');
 
 // Fetch an environment variable
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+// Check if the .env file exists and load the environment variables
+try {
+    envFile(path.join(__dirname, 'config/' + process.env.NODE_ENV + '.env'));
+} catch (e) {
+
+}
 
 module.exports = {
     // Where to start processing our code
@@ -36,6 +44,21 @@ module.exports = {
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
                 warnings: false
+            }
+        }),
+        // Create a process variable that has the property env
+        new webpack.DefinePlugin({
+            'process.env': {
+                // Single quotes test means that NODE_ENV value will be set to whatever the variable test equals
+                // when it runs the define plugin ('test')
+                // To set it to a string wrap it in double quotes ('"test"')
+                // or use JSON.stringify()
+                NODE_ENV           : JSON.stringify(process.env.NODE_ENV),
+                API_KEY            : JSON.stringify(process.env.API_KEY),
+                AUTH_DOMAIN        : JSON.stringify(process.env.AUTH_DOMAIN),
+                DATABASE_URL       : JSON.stringify(process.env.DATABASE_URL),
+                STORAGE_BUCKET     : JSON.stringify(process.env.STORAGE_BUCKET),
+                MESSAGING_SENDER_ID: JSON.stringify(process.env.MESSAGING_SENDER_ID)
             }
         })
     ],
@@ -102,7 +125,7 @@ module.exports = {
     // cheap-module-eval-source-map not working
     // devtool: 'cheap-module-eval-source-map'
     // devtool   : process.env.NODE_ENV === 'production' ? undefined : 'inline-source-map'
-    devtool: process.env.NODE_ENV === 'production' ? undefined : 'eval-source-map'
+    devtool   : process.env.NODE_ENV === 'production' ? undefined : 'eval-source-map'
     // or
     // devtool: 'eval-source-map'
 

@@ -1,5 +1,6 @@
 # Compiled Files #
 public/bundle.js
+config/
 
 # General Files #
 #################
@@ -21,8 +22,8 @@ public/bundle.js
 
 # Dependency directory #
 ########################
-node_modules
-bower_components
+node_modules/
+bower_components/
 
 # Big PSD files #
 #################
