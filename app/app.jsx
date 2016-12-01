@@ -4,7 +4,8 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 // ES6/ES2015: Object destructuring
 // Pull off four new variables
-let {Route, Router, IndexRoute, hashHistory} = require('react-router');
+// let {Route, Router, IndexRoute, hashHistory} = require('react-router');
+let {hashHistory} = require('react-router');
 // ES5
 // let Route = require('react-router').Route;
 // let Router = require('react-router').Router;
@@ -17,16 +18,30 @@ let {Provider} = require('react-redux');
 // Components
 let Main = require('Main');
 // Connected version
-import Login from 'Login';
+// import Login from 'Login';
 // let TodoApp = require('TodoApp');
-import TodoApp from 'TodoApp';
+// import TodoApp from 'TodoApp';
+import firebase from 'app/firebase/';
+import router from 'app/router/';
+
+// If user argument is present then someone is logged in
+// If user argument is missing then someone logged out
+firebase.auth().onAuthStateChanged((user) => {
+    // Redirect the user
+    if (user) {
+        // Swap out the URL with something new
+        hashHistory.push('/todos');
+    } else {
+        hashHistory.push('/');
+    }
+});
 
 // My Redux
 let actions = require('actions');
 let store = require('configureStore').configure();
 
 // Custom APIs
-let TodoAPI = require('TodoAPI');
+// let TodoAPI = require('TodoAPI');
 
 // No need to use from since we don't care about creating any variables via the modules exports
 // import './../playground/firebase/index';
@@ -68,13 +83,7 @@ ReactDOM.render(
     // The ToDoApp component as well as all of its children are gonna be able to access
     // the data on the store as well as the dispatch actions
     <Provider store={store}>
-        <Router history={hashHistory}>
-            {/* Parent route that wraps all of our other components */}
-            <Route path="/">
-                <IndexRoute component={Login}/>
-                <Route path="todos" component={TodoApp}/>
-            </Route>
-        </Router>
+        {router}
     </Provider>,
     document.getElementById('app')
 );
