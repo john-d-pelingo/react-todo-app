@@ -39,7 +39,9 @@ export let startAddTodo = (text) => {
             completedAt: null
         };
 
-        let todoRef = firebaseRef.child('todos').push(todo);
+        // getState() returns the current state of the application which is the redux store
+        let uid = getState().auth.uid;
+        let todoRef = firebaseRef.child(`users/${uid}/todos`).push(todo);
         // console.log('STAGE 1');
 
         // Synchronize with firebase
@@ -85,8 +87,9 @@ export let startAddTodos = () => {
     // }]
 
     return (dispatch, getState) => {
-
-        let todoRef = firebaseRef.child('todos');
+        // getState() returns the current state of the application which is the redux store
+        let uid = getState().auth.uid;
+        let todoRef = firebaseRef.child(`users/${uid}/todos`);
 
         // We return the promise so we can use it for tests
         return todoRef
@@ -140,7 +143,10 @@ export let startToggleTodo = (id, completed) => {
     return (dispatch, getState) => {
         // let todoRef = firebaseRef.child('todos/' + id);
         // ES6 template strings
-        let todoRef = firebaseRef.child(`todos/${id}`);
+
+        // getState() returns the current state of the application which is the redux store
+        let uid = getState().auth.uid;
+        let todoRef = firebaseRef.child(`users/${uid}/todos/${id}`);
 
         // Change completed property to whatever was passed in
 

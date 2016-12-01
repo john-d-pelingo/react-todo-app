@@ -29,7 +29,10 @@ import router from 'app/router/';
 firebase.auth().onAuthStateChanged((user) => {
     // Redirect the user
     if (user) {
+        // Save uid in the redux store
         store.dispatch(actions.login(user.uid));
+        // Grab to do of logged in user
+        store.dispatch(actions.startAddTodos());
         // Swap out the URL with something new
         hashHistory.push('/todos');
     } else {
@@ -66,8 +69,6 @@ let store = require('configureStore').configure();
 // store.dispatch(actions.addTodo('Do something'));
 // store.dispatch(actions.setSearchText('something'));
 // store.dispatch(actions.toggleShowCompleted());
-
-store.dispatch(actions.startAddTodos());
 
 // Load foundation (css!) and inject to HTML (style!)
 // require('style!css!foundation-sites/dist/foundation.min.css');
