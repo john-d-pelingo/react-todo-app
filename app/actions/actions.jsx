@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 // No need to specify index.js if that is the only file in there like in this case
-import firebase, {firebaseRef} from 'app/firebase/';
+import firebase, {firebaseRef, githubProvider} from 'app/firebase/';
 
 export let setSearchText = (searchText) => {
     return {
@@ -39,7 +39,9 @@ export let startAddTodo = (text) => {
             completedAt: null
         };
 
-        let todoRef = firebaseRef.child('todos').push(todo);
+        // getState() returns the current state of the application which is the redux store
+        let uid = getState().auth.uid;
+        let todoRef = firebaseRef.child(`users/${uid}/todos`).push(todo);
         // console.log('STAGE 1');
 
         // Synchronize with firebase
@@ -85,8 +87,9 @@ export let startAddTodos = () => {
     // }]
 
     return (dispatch, getState) => {
-
-        let todoRef = firebaseRef.child('todos');
+        // getState() returns the current state of the application which is the redux store
+        let uid = getState().auth.uid;
+        let todoRef = firebaseRef.child(`users/${uid}/todos`);
 
         // We return the promise so we can use it for tests
         return todoRef
@@ -140,7 +143,10 @@ export let startToggleTodo = (id, completed) => {
     return (dispatch, getState) => {
         // let todoRef = firebaseRef.child('todos/' + id);
         // ES6 template strings
-        let todoRef = firebaseRef.child(`todos/${id}`);
+
+        // getState() returns the current state of the application which is the redux store
+        let uid = getState().auth.uid;
+        let todoRef = firebaseRef.child(`users/${uid}/todos/${id}`);
 
         // Change completed property to whatever was passed in
 
@@ -155,3 +161,44 @@ export let startToggleTodo = (id, completed) => {
         });
     };
 };
+
+export let login = (uid) => {
+    return {
+        type: 'LOGIN',
+        uid
+    };
+};
+
+export let startLogin = () => {
+    return (dispatch, getState) => {
+        // Start the login process with the github provider
+        // Keep the chain going
+        return firebase.auth().signInWithPopup(githubProvider).then(
+            (result) => {
+                console.log('Auth worked', result);
+            },
+            (error) => {
+                console.log('Unable to auth', error);
+            }
+        );
+    };
+};
+
+export let logout = () => {
+    return {
+        type: 'LOGOUT'
+    };
+};
+
+
+export let startLogout = () => {
+    return (dispatch, getState) => {
+        return firebase.auth().signOut().then(
+            () => {
+                console.log('Logged out!')
+            }
+        );
+    };
+};
+
+

@@ -4,7 +4,8 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 // ES6/ES2015: Object destructuring
 // Pull off four new variables
-let {Route, Router, IndexRoute, hashHistory} = require('react-router');
+// let {Route, Router, IndexRoute, hashHistory} = require('react-router');
+let {hashHistory} = require('react-router');
 // ES5
 // let Route = require('react-router').Route;
 // let Router = require('react-router').Router;
@@ -15,14 +16,37 @@ let {Route, Router, IndexRoute, hashHistory} = require('react-router');
 let {Provider} = require('react-redux');
 
 // Components
-let ToDoApp = require('TodoApp');
+let Main = require('Main');
+// Connected version
+// import Login from 'Login';
+// let TodoApp = require('TodoApp');
+// import TodoApp from 'TodoApp';
+import firebase from 'app/firebase/';
+import router from 'app/router/';
+
+// If user argument is present then someone is logged in
+// If user argument is missing then someone logged out
+firebase.auth().onAuthStateChanged((user) => {
+    // Redirect the user
+    if (user) {
+        // Save uid in the redux store
+        store.dispatch(actions.login(user.uid));
+        // Grab to do of logged in user
+        store.dispatch(actions.startAddTodos());
+        // Swap out the URL with something new
+        hashHistory.push('/todos');
+    } else {
+        store.dispatch(actions.logout());
+        hashHistory.push('/');
+    }
+});
 
 // My Redux
 let actions = require('actions');
 let store = require('configureStore').configure();
 
 // Custom APIs
-let TodoAPI = require('TodoAPI');
+// let TodoAPI = require('TodoAPI');
 
 // No need to use from since we don't care about creating any variables via the modules exports
 // import './../playground/firebase/index';
@@ -46,8 +70,6 @@ let TodoAPI = require('TodoAPI');
 // store.dispatch(actions.setSearchText('something'));
 // store.dispatch(actions.toggleShowCompleted());
 
-store.dispatch(actions.startAddTodos());
-
 // Load foundation (css!) and inject to HTML (style!)
 // require('style!css!foundation-sites/dist/foundation.min.css');
 
@@ -64,7 +86,7 @@ ReactDOM.render(
     // The ToDoApp component as well as all of its children are gonna be able to access
     // the data on the store as well as the dispatch actions
     <Provider store={store}>
-        <ToDoApp/>
+        {router}
     </Provider>,
     document.getElementById('app')
 );

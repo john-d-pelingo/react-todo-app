@@ -118,4 +118,36 @@ describe('Reducers', () => {
         });
     });
 
+    describe('authReducer', () => {
+        it('should store uid on LOGIN', () => {
+            let auth = {
+                uid: '9123'
+            };
+
+            let action = {
+                type: 'LOGIN',
+                uid : auth.uid
+            };
+
+            let res = reducers.authReducer(df(auth), df(action));
+
+            expect(res.uid).toEqual(auth.uid);
+        });
+
+        it('should wipe auth on LOGOUT', () => {
+            let auth = {
+                uid: '666'
+            };
+
+            let action = {
+                type: 'LOGOUT'
+            };
+
+            let res = reducers.authReducer(df(auth), df(action));
+
+            expect(res.uid).toNotExist();
+            expect(res).toEqual({});
+        });
+
+    });
 });
