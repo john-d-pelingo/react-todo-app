@@ -15,6 +15,8 @@ try {
 
 }
 
+// Used in our actions file to authenticate with Github
+export let githubProvider = new firebase.auth.GithubAuthProvider();
 export let firebaseRef = firebase.database().ref();
 
 // The reason for default is just to clean up files that import the firebase above

@@ -15,7 +15,9 @@ let configureStore = require('configureStore');
 // import takes care that we get the default if no object destructuring is defined
 import TodoList from 'TodoList';
 
-let TodoApp = require('TodoApp');
+// let TodoApp = require('TodoApp');
+// Grab the unconnected version
+import {TodoApp} from 'TodoApp';
 
 describe('TodoApp', () => {
     it('should exist', () => {
