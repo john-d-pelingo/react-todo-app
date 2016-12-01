@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 // No need to specify index.js if that is the only file in there like in this case
-import firebase, {firebaseRef} from 'app/firebase/';
+import firebase, {firebaseRef, githubProvider} from 'app/firebase/';
 
 export let setSearchText = (searchText) => {
     return {
@@ -153,5 +153,30 @@ export let startToggleTodo = (id, completed) => {
         return todoRef.update(updates).then(() => {
             dispatch(updateTodo(id, updates));
         });
+    };
+};
+
+export let startLogin = () => {
+    return (dispatch, getState) => {
+        // Start the login process with the github provider
+        // Keep the chain going
+        return firebase.auth().signInWithPopup(githubProvider).then(
+            (result) => {
+                console.log('Auth worked', result);
+            },
+            (error) => {
+                console.log('Unable to auth', error);
+            }
+        );
+    };
+};
+
+export let startLogout = () => {
+    return (dispatch, getState) => {
+        return firebase.auth().signOut().then(
+            () => {
+                console.log('Logged out!')
+            }
+        );
     };
 };

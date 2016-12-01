@@ -15,7 +15,11 @@ let {Route, Router, IndexRoute, hashHistory} = require('react-router');
 let {Provider} = require('react-redux');
 
 // Components
-let ToDoApp = require('TodoApp');
+let Main = require('Main');
+// Connected version
+import Login from 'Login';
+// let TodoApp = require('TodoApp');
+import TodoApp from 'TodoApp';
 
 // My Redux
 let actions = require('actions');
@@ -64,7 +68,13 @@ ReactDOM.render(
     // The ToDoApp component as well as all of its children are gonna be able to access
     // the data on the store as well as the dispatch actions
     <Provider store={store}>
-        <ToDoApp/>
+        <Router history={hashHistory}>
+            {/* Parent route that wraps all of our other components */}
+            <Route path="/">
+                <IndexRoute component={Login}/>
+                <Route path="todos" component={TodoApp}/>
+            </Route>
+        </Router>
     </Provider>,
     document.getElementById('app')
 );
