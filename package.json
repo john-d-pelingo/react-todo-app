@@ -4,7 +4,7 @@
   "description": "react-todo-app",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/karma start --single-run --browsers Chrome",
+    "test": "SET NODE_ENV=test&& karma start --single-run --browsers Chrome",
     "build": "webpack",
     "start": "npm run build && node server.js"
   },

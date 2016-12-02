@@ -40,35 +40,6 @@ describe('Actions', () => {
         expect(res).toEqual(action);
     });
 
-    // Asynchronous test since we use firebase
-    it('should create todo and dispatch ADD_TODO but occasionally fails because Google firebase is a bit slow', (done) => {
-        const STORE = createMockStore({});
-        const TODO_TEXT = 'A todo iteeeeem';
-
-        // Returns a promise
-        STORE.dispatch(actions.startAddTodo(TODO_TEXT)).then(
-            () => {
-                // Success
-
-                // Returns an array of all of the actions that were fired on our mock store
-                // toInclude() is similar to toEqual()
-                const ACTIONS = STORE.getActions();
-
-                expect(ACTIONS[0]).toInclude({
-                    type: 'ADD_TODO'
-                });
-
-                expect(ACTIONS[0].todo).toInclude({
-                    text: TODO_TEXT
-                });
-
-                // Wrap up our tests
-                done();
-
-                // If things go bad we end the test
-            }).catch(done);
-    });
-
     it('should generate add todos action object', () => {
         let todos = [
             {
@@ -126,7 +97,7 @@ describe('Actions', () => {
     it('should generate login action object', () => {
         const ACTION = {
             type: 'LOGIN',
-            uid: '09990'
+            uid : '09990'
         };
 
         const RES = actions.login(ACTION.uid);
@@ -144,47 +115,80 @@ describe('Actions', () => {
         expect(RES).toEqual(ACTION);
     });
 
-
+    // Need existing data for these to wotk
     describe('Tests with firebase todos', () => {
         let testTodoRef;
+        // Store uid for logged in user;
+        let uid;
+        let todosRef;
 
         // From mocha and let's us define some code to run before every single test
         // Asynchronous
         // Create a todo item for test purposes
         beforeEach((done) => {
-            let todosRef = firebaseRef.child('todos');
-            // Completely wipe all the todo items
-            todosRef
-                .remove()
-                .then(() => {
-                    // We use push() to generate that reference
-                    testTodoRef = firebaseRef.child('todos').push();
+            // Sign in anonymously
+            firebase.auth().signInAnonymously().then((user) => {
+                uid = user.uid;
+                todosRef = firebaseRef.child(`users/${uid}/todos`);
 
-                    // Continue the promise chain
-                    return testTodoRef
-                        .set({
-                            text     : 'Something to do',
-                            completed: false,
-                            createdAt: 23123
-                        });
-                })
+                // Remove existing todos
+                return todosRef.remove();
+            }).then(() => {
+                testTodoRef = todosRef.push();
+
+                return testTodoRef
+                    .set({
+                        text     : 'Something to do',
+                        completed: false,
+                        createdAt: 23123
+                    });
+            })
                 .then(() => done())
                 .catch(done);
         });
+
+        //     let todosRef = firebaseRef.child('todos');
+        //     // Completely wipe all the todo items
+        //     todosRef
+        //         .remove()
+        //         .then(() => {
+        //             // We use push() to generate that reference
+        //             testTodoRef = firebaseRef.child('todos').push();
+        //
+        //             // Continue the promise chain
+        //             return testTodoRef
+        //                 .set({
+        //                     text     : 'Something to do',
+        //                     completed: false,
+        //                     createdAt: 23123
+        //                 });
+        //         })
+        //         .then(() => done())
+        //         .catch(done);
+        // });
 
         // From mocha and let's us define some code to run after every single test
         // Asynchronous
         // Remove generated todo item for test purposes
         afterEach((done) => {
-            testTodoRef
-                .remove()
-                // Success
-                .then(() => done());
+            // testTodoRef
+            //     .remove()
+            //     // Success
+            //     .then(() => done());
+            // Wipe out the entire todos instead of one by one
+            // Success
+            todosRef.remove().then(() => done());
+
         });
 
         // Asynchronous test
         it('should toggle todo and dispatch UPDATE_TODO action', (done) => {
-            const STORE = createMockStore({});
+            const STORE = createMockStore({
+                // Now we need uid
+                auth: {
+                    uid
+                }
+            });
             // Was originally false above
             const ACTION = actions.startToggleTodo(testTodoRef.key, true);
 
@@ -209,7 +213,12 @@ describe('Actions', () => {
         });
 
         it('should populate todos and dispatch ADD_TODOS action', (done) => {
-            const STORE = createMockStore({});
+            const STORE = createMockStore({
+                // Now we need uid
+                auth: {
+                    uid
+                }
+            });
             const ACTION = actions.startAddTodos();
 
             STORE.dispatch(ACTION).then(() => {
@@ -220,6 +229,39 @@ describe('Actions', () => {
                 expect(MOCK_ACTIONS[0].todos[0].text).toEqual('Something to do');
                 done();
             }, done);
+        });
+
+        // Asynchronous test since we use firebase
+        it('should create todo and dispatch ADD_TODO but occasionally fails because Google firebase is a bit slow', (done) => {
+            const STORE = createMockStore({
+                // Now we need uid
+                auth: {
+                    uid
+                }
+            });
+            const TODO_TEXT = 'A todo iteeeeem';
+
+            // Returns a promise
+            STORE.dispatch(actions.startAddTodo(TODO_TEXT)).then(() => {
+                // Success
+
+                // Returns an array of all of the actions that were fired on our mock store
+                // toInclude() is similar to toEqual()
+                const ACTIONS = STORE.getActions();
+
+                expect(ACTIONS[0]).toInclude({
+                    type: 'ADD_TODO'
+                });
+
+                expect(ACTIONS[0].todo).toInclude({
+                    text: TODO_TEXT
+                });
+
+                // Wrap up our tests
+                done();
+
+                // If things go bad we end the test
+            }).catch(done);
         });
     });
 });
