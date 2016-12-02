@@ -77,6 +77,9 @@ export let todosReducer = (state = [], action) => {
                 // The old todos stored locally
                 ...action.todos
             ];
+        // This case is also called in authReducer
+        case 'LOGOUT':
+            return [];
         default:
             return state;
     }
@@ -88,6 +91,7 @@ export let authReducer = (state = {}, action) => {
             return {
                 uid: action.uid
             };
+        // This case is also called in todosReducer
         case 'LOGOUT':
             return {};
         default:
