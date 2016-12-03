@@ -1,5 +1,5 @@
 import React from 'react';
-let {Route, Router, IndexRoute, hashHistory} = require('react-router');
+import {Route, Router, IndexRoute, hashHistory} from 'react-router';
 
 import TodoApp from 'TodoApp';
 import Login from 'Login';
@@ -17,6 +17,7 @@ let requireLogin = (nextState, replace, next) => {
     }
     next();
 };
+
 let redirectIfLoggedIn= (nextState, replace, next) => {
     // If is logged in
     if (firebase.auth().currentUser) {
