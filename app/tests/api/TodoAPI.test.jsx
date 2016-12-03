@@ -111,9 +111,19 @@ describe('TodoAPI', () => {
             expect(filteredTodos.length).toBe(3);
         });
 
-        it('should filter todos by searchText \'apple\'', () => {
+        it('should filter todos by searchText \'aPpLe\'', () => {
             let filteredTodos = TodoAPI.filterTodos(todos, true, 'aPpLe');
             expect(filteredTodos.length).toBe(2);
+        });
+
+        it('should filter todos by searchText if uppercase', () => {
+            let filteredTodos = TodoAPI.filterTodos(todos, true, 'EAT');
+            expect(filteredTodos.length).toBe(1);
+        });
+
+        it('should filter todos by searchText if lowercase', () => {
+            let filteredTodos = TodoAPI.filterTodos(todos, true, 'shayman');
+            expect(filteredTodos.length).toBe(1);
         });
     });
 });

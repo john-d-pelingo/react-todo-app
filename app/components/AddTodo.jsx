@@ -1,11 +1,18 @@
-let React = require('react');
-let {connect} = require('react-redux');
-let actions = require('actions');
+import React from 'react';
+// connect() is the companion to the Provider component which
+// - lets our component access state properties
+// - provides as the dispatch() method
+import {connect} from 'react-redux';
 
-// Export this pure react component (non-connected component) for test purposes
-// Export non-connected react component version
-export let AddTodo = React.createClass({
-    onSubmit: function (e) {
+import * as actions from 'actions';
+
+// Export pure react component (non-connected component) version mainly for test purposes
+export class AddTodo extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    onSubmit(e) {
         e.preventDefault();
         let {dispatch} = this.props;
 
@@ -15,34 +22,24 @@ export let AddTodo = React.createClass({
 
         if (strNewTodo.trim().length > 0) {
             inputNewTodoText.value = '';
-            // This prop is no longer gets passed down
-            // this.props.onAddTodo(strNewTodo.trim());
-            // Instead we use the dispatch function provided by the store
-            // and pass the action addTodo()
-            // dispatch(actions.addTodo(strNewTodo));
-            // New one with firebase integration
             dispatch(actions.startAddTodo(strNewTodo));
         } else {
             inputNewTodoText.focus();
         }
-    },
-    render  : function () {
+    }
+
+    render() {
         return (
             <div className="container__footer">
-                <form onSubmit={this.onSubmit} ref="form">
+                <form onSubmit={this.onSubmit.bind(this)} ref="form">
                     <input type="text" ref="new-todo-text" placeholder="Add a new todo"/>
                     <button className="button">Add Todo</button>
                 </form>
             </div>
         )
     }
-});
+};
 
-// We already have the dispatch() function which is provided by the store
-// and we don't need data since it is passed down from the Provider in app.jsx
-// This will be the default export and we can use import to get it
-// Export the connected react component version
+// Data is passed down from the Provider in app.jsx
+// Export connected react component version as default
 export default connect()(AddTodo);
-
-
-// module.exports = AddTodo;
