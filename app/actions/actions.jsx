@@ -2,17 +2,26 @@ import moment from 'moment';
 
 // No need to specify index.js if that is the only file in there like in this case
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/';
+import {
+    SET_SEARCH_TEXT,
+    ADD_TODO,
+    ADD_TODOS,
+    TOGGLE_SHOW_COMPLETED,
+    UPDATE_TODO,
+    LOGIN,
+    LOGOUT
+} from './action-types';
 
 export let setSearchText = (searchText) => {
     return {
-        type: 'SET_SEARCH_TEXT',
+        type: SET_SEARCH_TEXT,
         searchText
     };
 };
 
 export let addTodo = (todo) => {
     return {
-        type: 'ADD_TODO',
+        type: ADD_TODO,
         // After implementing startAddTodo() in the actions a string is no longer passed through
         // Instead a todo object is passed
         todo
@@ -69,7 +78,7 @@ export let startAddTodo = (text) => {
 
 export let addTodos = (todos) => {
     return {
-        type: 'ADD_TODOS',
+        type: ADD_TODOS,
         todos
     };
 };
@@ -119,7 +128,7 @@ export let startAddTodos = () => {
 
 export let toggleShowCompleted = () => {
     return {
-        type: 'TOGGLE_SHOW_COMPLETED'
+        type: TOGGLE_SHOW_COMPLETED
     };
 };
 
@@ -132,7 +141,7 @@ export let toggleShowCompleted = () => {
 
 export let updateTodo = (id, updates) => {
     return {
-        type: 'UPDATE_TODO',
+        type: UPDATE_TODO,
         id,
         updates
     };
@@ -164,7 +173,7 @@ export let startToggleTodo = (id, completed) => {
 
 export let login = (uid) => {
     return {
-        type: 'LOGIN',
+        type: LOGIN,
         uid
     };
 };
@@ -186,7 +195,7 @@ export let startLogin = () => {
 
 export let logout = () => {
     return {
-        type: 'LOGOUT'
+        type: LOGOUT
     };
 };
 
