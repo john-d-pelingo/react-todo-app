@@ -77,6 +77,10 @@ export let todosReducer = (state = [], action) => {
                 // The old todos stored locally
                 ...action.todos
             ];
+        case 'DELETE_TODO':
+            return state.filter(
+                todo => todo.id !== action.id
+            );
         // This case is also called in authReducer
         case 'LOGOUT':
             return [];
@@ -97,5 +101,4 @@ export let authReducer = (state = {}, action) => {
         default:
             return state;
     }
-
 };

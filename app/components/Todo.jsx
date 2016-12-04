@@ -11,6 +11,7 @@ import * as actions from 'actions';
 export class Todo extends React.Component {
     constructor(props) {
         super(props);
+        this.onDeleteClick = this.onDeleteClick.bind(this);
     }
 
     onTodoClick(e) {
@@ -21,6 +22,11 @@ export class Todo extends React.Component {
 
     onCheckBoxClick(e) {
         e.preventDefault();
+    }
+
+    onDeleteClick() {
+        let {id, dispatch} = this.props;
+        dispatch(actions.startDeleteTodo(id));
     }
 
     render() {
@@ -39,20 +45,22 @@ export class Todo extends React.Component {
         };
 
         return (
-            <div className={todoClassName} onClick={this.onTodoClick.bind(this)}>
+            <div className={todoClassName}>
                 <div>
-                    <input type="checkbox" checked={completed} onChange={this.onCheckBoxClick.bind(this)}/>
+                    <input type="checkbox" checked={completed} onClick={this.onTodoClick.bind(this)} onChange={this.onCheckBoxClick.bind(this)}/>
                 </div>
-                <div className="todo__subtext">
+                <div className="todo__subtext" onClick={this.onTodoClick.bind(this)}>
                     <p>{text}</p>
                     <p>{renderDate()}</p>
                 </div>
+                <button className="button alert" onClick={this.onDeleteClick}>Delete</button>
             </div>
         );
     }
-};
+}
 
 // Data is passed down from the Provider in app.jsx
-// but {text, completed, createdAt, completedAt} is passed down from the connected react component TodoList.jsx
+// but {text, completed, createdAt, completedAt} is passed down
+// from the connected react component TodoList.jsx
 // Export connected react component version as default
 export default connect()(Todo);

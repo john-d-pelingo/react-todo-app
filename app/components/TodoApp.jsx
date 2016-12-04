@@ -14,6 +14,10 @@ export class TodoApp extends React.Component {
         super(props);
     }
 
+    componentDidMount() {
+
+    }
+
     onLogout(e) {
         e.preventDefault();
         let {dispatch} = this.props;
@@ -39,7 +43,7 @@ export class TodoApp extends React.Component {
             </div>
         );
     }
-};
+}
 
 // Data is passed down from the Provider in app.jsx
 // Export connected react component version as default

@@ -94,6 +94,17 @@ describe('Actions', () => {
         expect(res).toEqual(action);
     });
 
+    it('should generate delete action object', () => {
+        const action = {
+            type: 'DELETE_TODO',
+            id  : '6596',
+        };
+
+        const res = actions.deleteTodo(action.id);
+
+        expect(res).toEqual(action);
+    });
+
     it('should generate login action object', () => {
         const ACTION = {
             type: 'LOGIN',

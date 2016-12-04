@@ -5,6 +5,7 @@ import firebase, {firebaseRef, githubProvider} from 'app/firebase/';
 import {
     SET_SEARCH_TEXT,
     ADD_TODO,
+    DELETE_TODO,
     ADD_TODOS,
     TOGGLE_SHOW_COMPLETED,
     UPDATE_TODO,
@@ -84,17 +85,6 @@ export let addTodos = (todos) => {
 };
 
 export let startAddTodos = () => {
-    // Firebase returns
-    // '12312312': {
-    //     text: 'test'
-    // }
-
-    // Our app structure
-    // [{
-    //     id: '12312312',
-    //     'text: 'test'
-    // }]
-
     return (dispatch, getState) => {
         // getState() returns the current state of the application which is the redux store
         let uid = getState().auth.uid;
@@ -132,12 +122,26 @@ export let toggleShowCompleted = () => {
     };
 };
 
-// export lettoggleTodo = (id) => {
-//     return {
-//         type: 'TOGGLE_TODO',
-//         id
-//     };
-// };
+export let deleteTodo = (id) => {
+    return {
+        type: DELETE_TODO,
+        id
+    };
+};
+
+export let startDeleteTodo = (id) => {
+    return (dispatch, getState) => {
+        let uid = getState().auth.uid;
+        let todoRef = firebaseRef.child(`users/${uid}/todos/${id}`);
+
+        console.log(todoRef);
+        return todoRef
+            .remove()
+            .then(() => {
+                dispatch(deleteTodo(id));
+            });
+    };
+};
 
 export let updateTodo = (id, updates) => {
     return {

@@ -3,9 +3,14 @@ import * as Redux from 'react-redux';
 
 import * as actions from 'actions';
 
-export class Login extends React.Component{
+export class Login extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    componentDidMount() {
+        // alert('hello');
+        // dispatch(actions.startLogin());
     }
 
     onLogin() {
@@ -30,8 +35,10 @@ export class Login extends React.Component{
                 </div>
             </div>
         );
+
     }
-};
+}
 
 // Export connected react component version as default
-export default Redux.connect()(Login);
+export default Redux.connect(
+)(Login);

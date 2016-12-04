@@ -42,7 +42,7 @@ export class TodoSearch extends React.Component {
             </div>
         )
     }
-};
+}
 
 // Data is passed down from the Provider in app.jsx
 // Export connected react component version as default

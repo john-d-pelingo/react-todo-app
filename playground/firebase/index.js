@@ -94,23 +94,23 @@ firebaseRef.set({
 //     name: 1337
 // });
 
-// // Wipe the database completely
-// firebaseRef.remove();
-//
-// // Remove app/name from our database
-// firebaseRef.child('app/name').remove();
-//
-// firebaseRef.child('app').update({
-//     version: '2.0',
-//     // Remove the data 'app/name' completely
-//     name   : null
-// });
-//
-// firebaseRef.update({
-//     'isRunning': null
-// });
-//
-// firebaseRef.child('user/age').remove();
+// Wipe the database completely
+firebaseRef.remove();
+
+// Remove app/name from our database
+firebaseRef.child('app/name').remove();
+
+firebaseRef.child('app').update({
+    version: '2.0',
+    // Remove the data 'app/name' completely
+    name   : null
+});
+
+firebaseRef.update({
+    'isRunning': null
+});
+
+firebaseRef.child('user/age').remove();
 
 // // Allow to trigger and listen for an event
 // // Fetch all of the data available at the current reference
