@@ -14,13 +14,6 @@ try {
 } catch (e) {
 }
 
-const ENV_DEVELOPMENT = process.env.NODE_ENV === 'development';
-const ENV_PRODUCTION = process.env.NODE_ENV === 'production';
-const ENV_TEST = process.env.NODE_ENV === 'test';
-
-const HOST = '0.0.0.0';
-const PORT = 3000;
-
 //=========================================================
 //  LOADERS
 //---------------------------------------------------------
