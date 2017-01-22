@@ -3,7 +3,7 @@ var express = require('express');
 // Create our app
 var app = express();
 // For Heroku
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3003;
 
 // Redirect HTTPS to HTTP
 // Express middleware: do something with every request
